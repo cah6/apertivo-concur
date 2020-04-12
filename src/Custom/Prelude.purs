@@ -1,6 +1,8 @@
 module Custom.Prelude
   ( module Prelude
+  , module Control.Alt
   , module Control.Monad.Reader
+  , module Data.Functor
   , module Data.Bifunctor
   , module Data.Const
   , module Data.Date
@@ -23,9 +25,11 @@ module Custom.Prelude
 
 import Prelude
 
+import Control.Alt ((<|>))
 import Control.Monad.Reader (class MonadAsk, class MonadReader, class MonadTrans,
     Reader, ReaderT(..), ask, asks, lift, local, mapReader, mapReaderT, runReader,
     runReaderT, withReader, withReaderT)
+import Data.Functor (mapFlipped)
 import Data.Bifunctor (class Bifunctor, bimap, lmap, rmap)
 import Data.Const (Const(..))
 import Data.Date (Date, Day, Month(..), Weekday(..), Year, adjust, canonicalDate,

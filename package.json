@@ -6,7 +6,7 @@
   "scripts": {
     "test": "spago test",
     "clean": "rimraf .cache .spago .psci_modules output .pulp-cache prod dist",
-    "build": "spago build",
+    "build": "spago build --no-psa",
     "dev": "rimraf dist && spago build && parcel build --public-url ./ index.html",
     "prod": "rimraf prod dist docs && mkdir prod && spago bundle-app --main Main --to prod/index.prod.js && java -jar closure-compiler/closure-compiler-v20190301.jar --js prod/index.prod.js --js_output_file prod/index.js && cp index.html prod/index.html && cp -r css prod/css && parcel build --public-url ./ prod/index.html && rimraf prod && cp -r dist docs",
     "start": "spago build && parcel index.html",
@@ -22,11 +22,21 @@
     "spago": "^0.12.1"
   },
   "dependencies": {
-    "@material-ui/core": "^4.9.9",
+    "@date-io/core": "^1.3.13",
+    "@date-io/date-fns": "^1.3.13",
+    "@material-ui/core": "^4.0.0",
+    "@material-ui/pickers": "^3.2.10",
+    "@react-google-maps/api": "^1.8.6",
     "@types/react": "^16.8.6",
     "bulma": "^0.8.1",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0",
+    "date-fns": "^2.0.0",
+    "prop-types": "^15.6.0",
+    "purty": "^6.1.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-google-autocomplete": "^1.1.3",
+    "react-google-maps": "^9.4.5",
+    "react-places-autocomplete": "^7.2.1",
     "react-spinners": "^0.8.1"
   }
 }

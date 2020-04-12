@@ -7,6 +7,31 @@ let upstream =
 
 let overrides = {=}
 
-let additions = {=}
+let additions =
+  { react-mui =
+      { dependencies =
+          [ "prelude"
+          , "react"
+          , "react-dom"
+          , "tscompat"
+          , "typelevel-prelude"
+          ]
+      , repo =
+          "https://github.com/doolse/purescript-react-mui.git"
+      , version =
+          "v3.9.313"
+      }
+  , tscompat =
+      { dependencies =
+          [ "prelude"
+          , "react"
+          , "typelevel-prelude"
+          ]
+      , repo =
+          "https://github.com/doolse/purescript-tscompat.git"
+      , version =
+          "v1.0.1"
+      }
+  }
 
 in  upstream // overrides // additions
