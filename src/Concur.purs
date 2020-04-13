@@ -1,7 +1,8 @@
 module Concur
-  ( module C
+  ( module CR
+  , module CE
   ) where
 
 
-import Concur.Reexports as C
-import Concur.Extra as C
+import Concur.Reexports as CR
+import Concur.Extra as CE

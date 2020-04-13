@@ -13,8 +13,9 @@ You can edit this file as you like.
     , "concur-react"
     , "console"
     , "effect"
-    , "simple-json"
+    , "generics-rep"
     , "react-mui"
+    , "simple-json"
     ]
 , packages =
     ./packages.dhall

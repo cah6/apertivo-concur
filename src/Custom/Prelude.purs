@@ -25,15 +25,16 @@ module Custom.Prelude
 
 import Prelude
 
-import Control.Alt ((<|>))
+import Control.Alt (class Alt, class Functor, alt, map, void, ($>), (<#>), (<$), (<$>), (<|>))
 import Control.Monad.Reader (class MonadAsk, class MonadReader, class MonadTrans,
     Reader, ReaderT(..), ask, asks, lift, local, mapReader, mapReaderT, runReader,
     runReaderT, withReader, withReaderT)
 import Data.Functor (mapFlipped)
 import Data.Bifunctor (class Bifunctor, bimap, lmap, rmap)
 import Data.Const (Const(..))
-import Data.Date (Date, Day, Month(..), Weekday(..), Year, adjust, canonicalDate,
-    day, diff, exactDate, isLeapYear, lastDayOfMonth, month, weekday, year)
+-- no Weekday(..), weekday
+import Data.Date (Date, Day, Month(..), Year, adjust, canonicalDate,
+    day, diff, exactDate, isLeapYear, lastDayOfMonth, month, year)
 import Data.DateTime (Date, DateTime(..))
 import Data.Foldable (class Foldable, all, and, any, elem, find, findMap, fold,
     foldM, foldMap, foldMapDefaultL, foldMapDefaultR, foldl, foldlDefault, foldr,

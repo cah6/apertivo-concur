@@ -2,7 +2,11 @@ module Types where
 
 import Custom.Prelude
 
+import Data.Generic.Rep (class Generic)
+import Data.Generic.Rep.Show (genericShow)
+import Foreign.Extras (enumReadForeign)
 import Simple.JSON as JSON
+
 
 type HappyHour =
   { city :: String
@@ -14,11 +18,13 @@ type HappyHour =
   , schedule :: Array Schedule
   }
 
+
 type Schedule =
-  { days :: Array String
+  { days :: Array Weekday
   , scheduleDescription :: String
   , time :: String
   }
+
 
 type LatLng =
   { latitude :: Number
@@ -26,6 +32,32 @@ type LatLng =
   }
 
 
+data Weekday
+  = Sunday | Monday | Tuesday | Wednesday | Thursday | Friday | Saturday
+
+derive instance eqWeekday :: Eq Weekday
+derive instance genWeekday :: Generic Weekday _
+
+instance readWeekday :: JSON.ReadForeign Weekday where
+  readImpl = enumReadForeign
+
+instance showWeekday :: Show Weekday where
+  show = genericShow
+
+daysOrdered :: Array Weekday
+daysOrdered = [ Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+
+abbreviate :: Weekday -> String
+abbreviate Sunday = "S"
+abbreviate Monday = "M"
+abbreviate Tuesday = "T"
+abbreviate Wednesday = "W"
+abbreviate Thursday = "T"
+abbreviate Friday = "F"
+abbreviate Saturday = "S"
+
+------------------------------------------------------------------------------
+-- | Test data
 staticHappyHours :: Array HappyHour
 staticHappyHours = case JSON.readJSON exampleHappyHours of
   Left e -> []
