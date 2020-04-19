@@ -24,18 +24,25 @@ wrapClass1 clazz child = C.div [ C.className clazz ] [ child ]
 
 ------------------------------------------------------------------------------
 -- New prop shorthands
+type AnyProp = forall a b. a -> C.ReactProps b
 
-variant :: forall a b. a -> C.ReactProps b
+id :: AnyProp
+id = C.unsafeMkProp "id"
+
+variant :: AnyProp
 variant = C.unsafeMkProp "variant"
 
-type_ :: forall a b. a -> C.ReactProps b
+type_ :: AnyProp
 type_ = C.unsafeMkProp "type"
 
-mx :: forall a b. a -> C.ReactProps b
+mx :: AnyProp
 mx = C.unsafeMkProp "mx"
 
-my :: forall a b. a -> C.ReactProps b
+my :: AnyProp
 my = C.unsafeMkProp "my"
 
-elevation :: forall a b. a -> C.ReactProps b
+elevation :: AnyProp
 elevation = C.unsafeMkProp "elevation"
+
+value_ :: AnyProp
+value_ = C.unsafeMkProp "value"

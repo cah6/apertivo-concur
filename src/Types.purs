@@ -8,6 +8,7 @@ import Foreign.Extras (enumReadForeign)
 import Simple.JSON as JSON
 
 
+
 type HappyHour =
   { city :: String
   , restaurant :: String
@@ -62,6 +63,7 @@ staticHappyHours :: Array HappyHour
 staticHappyHours = case JSON.readJSON exampleHappyHours of
   Left e -> []
   Right xs -> xs
+
 
 exampleHappyHours :: String
 exampleHappyHours = """

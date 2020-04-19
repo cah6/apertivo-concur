@@ -1,1 +1,1 @@
-exports.reactSpinner = require('react-spinners/GridLoader').default
+exports.reactSpinner = require('react-spinners/ClimbingBoxLoader').default

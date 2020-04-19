@@ -10,3 +10,5 @@ html/index.js
 /dist
 /.spago
 .psc-ide-port
+firebase-config.js
+apertivo-import

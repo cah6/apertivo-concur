@@ -21,9 +21,11 @@ import MaterialUI.TableRow (classTableRow)
 import MaterialUI.TableSortLabel (classTableSortLabel)
 import MaterialUI.TextField (classTextField)
 import MaterialUI.Theme (Theme)
+import MaterialUI.Typography (classTypography)
 import React (ReactClass, unsafeCreateElement)
 import React.DOM.Props (unsafeFromPropsArray)
 
+type El = C.El
 type El1 = forall a. Array (C.ReactProps a) -> C.Widget C.HTML a -> C.Widget C.HTML a
 type El1' = forall a. C.Widget C.HTML a -> C.Widget C.HTML a
 
@@ -74,6 +76,12 @@ tcell1 props child = tcell props [child]
 
 tcell1' :: El1'
 tcell1' child = tcell [] [child]
+
+typography :: C.El
+typography = C.mkEl classTypography
+
+typography1 :: El1
+typography1 props child = typography props [child]
 
 thead :: C.El
 thead = C.mkEl classTableHead

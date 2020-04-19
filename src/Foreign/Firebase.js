@@ -10,3 +10,9 @@ exports.getCollectionImpl = function () {
           return results;
         })
 }
+
+exports.signInWithRedirectImpl = function () {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithRedirect(provider);
+  return firebase.auth().getRedirectResult();
+}
