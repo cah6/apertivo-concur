@@ -13,6 +13,13 @@ exports.getCollectionImpl = function () {
 
 exports.signInWithRedirectImpl = function () {
   var provider = new firebase.auth.GoogleAuthProvider();
+
   firebase.auth().signInWithRedirect(provider);
   return firebase.auth().getRedirectResult();
+}
+
+exports.signInWithPopupImpl = function () {
+  var provider = new firebase.auth.GoogleAuthProvider();
+
+  return firebase.auth().signInWithPopup(provider);
 }

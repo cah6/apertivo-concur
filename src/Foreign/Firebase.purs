@@ -1,6 +1,7 @@
 module Foreign.Firebase
   ( getCollection
   , getCollectionTyped
+  , signInWithPopup
   , signInWithRedirect
   ) where
 
@@ -17,6 +18,7 @@ import Simple.JSON as JSON
 foreign import data FHappyHour :: Type
 foreign import getCollectionImpl :: Effect (Promise Foreign)
 
+foreign import signInWithPopupImpl :: Effect (Promise Foreign)
 foreign import signInWithRedirectImpl :: Effect (Promise Foreign)
 
 
@@ -40,7 +42,16 @@ signInWithRedirect = do
   res <- liftEffect signInWithRedirectImpl
   resAff <- Promise.toAff res
   case JSON.read resAff of
-    Left e -> liftEffect $ E.throw  $ "got error while parsing: " <> show e
+    Left e -> liftEffect $ E.throw  $ "got parse error while signing in with redirect: " <> show e
+    Right v -> pure v
+
+
+signInWithPopup :: Aff UserCredential
+signInWithPopup = do
+  res <- liftEffect signInWithPopupImpl
+  resAff <- Promise.toAff res
+  case JSON.read resAff of
+    Left e -> liftEffect $ E.throw  $ "got parse error while signing in with popup: " <> show e
     Right v -> pure v
 
 

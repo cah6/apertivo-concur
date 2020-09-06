@@ -2,7 +2,9 @@ module Types where
 
 import Custom.Prelude
 
+import Data.Enum (class BoundedEnum)
 import Data.Generic.Rep (class Generic)
+import Data.Generic.Rep.Enum (class GenericBoundedEnum, genericCardinality, genericFromEnum, genericToEnum)
 import Data.Generic.Rep.Show (genericShow)
 import Foreign.Extras (enumReadForeign)
 import Simple.JSON as JSON
@@ -39,11 +41,27 @@ data Weekday
 derive instance eqWeekday :: Eq Weekday
 derive instance genWeekday :: Generic Weekday _
 
-instance readWeekday :: JSON.ReadForeign Weekday where
+instance readForeignWeekday :: JSON.ReadForeign Weekday where
   readImpl = enumReadForeign
 
 instance showWeekday :: Show Weekday where
   show = genericShow
+
+instance boundedEnumWeekday :: GenericBoundedEnum Weekday where
+  genericCardinality' = genericCardinality
+  genericToEnum' = genericToEnum
+  genericFromEnum' = genericFromEnum
+
+readWeekday :: String -> Weekday
+readWeekday str = case str of
+  "Sunday" -> Sunday
+  "Monday" -> Monday
+  "Tuesday" -> Tuesday
+  "Wednesday" -> Wednesday
+  "Thursday" -> Thursday
+  "Friday" -> Friday
+  "Saturday" -> Saturday
+  _ -> Monday
 
 daysOrdered :: Array Weekday
 daysOrdered = [ Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]

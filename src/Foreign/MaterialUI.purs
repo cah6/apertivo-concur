@@ -21,6 +21,7 @@ import MaterialUI.TableRow (classTableRow)
 import MaterialUI.TableSortLabel (classTableSortLabel)
 import MaterialUI.TextField (classTextField)
 import MaterialUI.Theme (Theme)
+import MaterialUI.Tooltip (classTooltip)
 import MaterialUI.Typography (classTypography)
 import React (ReactClass, unsafeCreateElement)
 import React.DOM.Props (unsafeFromPropsArray)
@@ -76,6 +77,12 @@ tcell1 props child = tcell props [child]
 
 tcell1' :: El1'
 tcell1' child = tcell [] [child]
+
+tooltip :: El
+tooltip = C.mkEl classTooltip
+
+tooltip1 :: El1
+tooltip1 props child = tooltip props [child]
 
 typography :: C.El
 typography = C.mkEl classTypography
