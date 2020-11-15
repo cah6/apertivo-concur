@@ -3,7 +3,7 @@ module GoogleMap where
 import Custom.Prelude
 import Concur.Extended as C
 import DOM (getElementById)
-import Data.Array (filter, mapWithIndex, head)
+import Data.Array (filter, mapWithIndex, head, (:))
 import Foreign.Functions as F
 import Foreign.GoogleMaps (googleMap, loadScript, marker)
 import React.Ref (createNodeRef, fromRef, getCurrentRef)
@@ -22,6 +22,8 @@ type MapInput
     , visibleItems :: Array HappyHour
     , bounds :: LatLngBounds
     , selected :: Maybe String
+    , userLocation :: LatLng
+    , googleApiKey :: String
     }
 
 fillVisibleItems :: MapInput -> MapInput
@@ -41,7 +43,7 @@ mkGoogleMap input = do
   ref <- liftEffect createNodeRef
   selected :: Maybe String <-
     loadScript
-      [ C.unsafeMkProp "googleMapsApiKey" "AIzaSyDZh_dyyl7PJCe-haE_hGOOP7NJCnqdy4k"
+      [ C.unsafeMkProp "googleMapsApiKey" input.googleApiKey
       , C.unsafeMkProp "id" "script-loader"
       ]
       [ googleMap
@@ -55,7 +57,7 @@ mkGoogleMap input = do
           , input.selected <$ C.unsafeMkPropHandler "onDragEnd"
           , C.unsafeMkProp "position" "fixed"
           ]
-          (map Just <$> (mapWithIndex (markerWithWindow input false) input.visibleItems))
+          (userMarker input : (map Just <$> (mapWithIndex (markerWithWindow input) input.visibleItems)))
       ]
   mMap <- liftEffect (getCurrentRef ref)
   -- scroll to the reel's item if needed
@@ -109,8 +111,33 @@ boundsContains bounds test =
     && (test.latitude < bounds.northeast.latitude)
     && (test.latitude > bounds.southwest.latitude)
 
-markerWithWindow :: MapInput -> Boolean -> Int -> HappyHour -> C.Widget C.HTML String
-markerWithWindow input isEnabled index hh = do
+userMarker :: forall a. MapInput -> C.Widget C.HTML a
+userMarker input = do
+  let
+    strokeWeight = 2
+
+    lat = input.userLocation.latitude
+
+    lng = input.userLocation.longitude
+  _ <-
+    marker
+      [ C.unsafeMkProp "position" { lat: lat, lng: lng }
+      -- makes a diamond
+      , C.unsafeMkProp "icon"
+          { path: "M 100,0 0,100 -100,0 0,-100 100,0 z"
+          , fillColor: "white"
+          , fillOpacity: 0.8
+          , scale: 0.2
+          , strokeColor: "black"
+          , strokeWeight: strokeWeight
+          }
+      , C.label $ "."
+      ]
+      []
+  userMarker input
+
+markerWithWindow :: MapInput -> Int -> HappyHour -> C.Widget C.HTML String
+markerWithWindow input index hh = do
   let
     isSelected = maybe false (\selectedId -> hh.id == selectedId) input.selected
 

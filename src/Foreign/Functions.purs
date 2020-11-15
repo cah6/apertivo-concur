@@ -11,3 +11,6 @@ foreign import attachReelObserver :: NativeNode -> Effect Unit
 foreign import log :: forall a. a -> Effect Unit
 
 foreign import scrollIntoView :: Element -> Effect Unit
+
+-- | Don't know how to make a generic one.
+foreign import getGoogleApiKey :: Effect String

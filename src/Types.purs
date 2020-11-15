@@ -2,13 +2,10 @@ module Types where
 
 import Custom.Prelude
 import Data.Array (sortBy)
-import Data.Enum (class BoundedEnum)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Enum (class GenericBoundedEnum, genericCardinality, genericFromEnum, genericToEnum)
 import Data.Generic.Rep.Show (genericShow)
-import Data.Ord (abs)
 import Foreign.Extras (enumReadForeign)
-import Foreign.Geolocation as Geo
 import Math (pow)
 import Simple.JSON as JSON
 
@@ -86,13 +83,12 @@ abbreviate Friday = "F"
 
 abbreviate Saturday = "S"
 
--- | Generally left to right? idk man
-sortList :: Array HappyHour -> Array HappyHour
-sortList xs = sortBy go xs
+sortList :: LatLng -> Array HappyHour -> Array HappyHour
+sortList origin xs = sortBy go xs
   where
-  mag hh = hh.latLng.latitude + pow hh.latLng.longitude 2.0
+  mag hh = pow (origin.latitude - hh.latLng.latitude) 2.0 + pow (origin.longitude - hh.latLng.longitude) 2.0
 
-  go x y = compare (mag y) (mag x)
+  go x y = compare (mag x) (mag y)
 
 ------------------------------------------------------------------------------
 -- | Test data

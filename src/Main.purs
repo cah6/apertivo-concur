@@ -5,6 +5,7 @@ import Types
 import Concur.Extended as C
 import Data.Array (mapWithIndex)
 import Foreign.Firebase as Firebase
+import Foreign.Functions as F
 import Foreign.Geolocation as Geo
 import Foreign.Spinner as Spinner
 import GoogleMap (MapInput, fillVisibleItems, mkGoogleMap)
@@ -17,8 +18,10 @@ main = C.runWidgetInDom "root" root
 root :: forall a. C.Widget C.HTML a
 root = do
   coords <- liftAff Geo.getLocation <|> loadingView "Please allow location access."
-  xs <- liftAff Firebase.getCollectionTyped
-  _ <- mapView (initMapInput xs coords)
+  -- xs <- liftAff Firebase.getCollectionTyped
+  xs <- pure staticHappyHours
+  input <- liftEffect $ initMapInput xs coords
+  _ <- mapView input
   C.text "We never get here"
 
 mapView :: forall a. MapInput -> C.Widget C.HTML a
@@ -43,23 +46,27 @@ mapView input = do
       ]
   mapView newInput
 
-initMapInput :: Array HappyHour -> Maybe Geo.Coords -> MapInput
-initMapInput items coords =
-  fillVisibleItems
-    { zoom: 13
-    , center: center
-    , items: sortedItems
-    , visibleItems: sortedItems
-    , bounds:
-        { northeast:
-            { latitude: center.latitude + latOffset, longitude: center.longitude + lngOffset }
-        , southwest:
-            { latitude: center.latitude - latOffset, longitude: center.longitude - lngOffset }
+initMapInput :: Array HappyHour -> Maybe Geo.Coords -> Effect MapInput
+initMapInput items coords = do
+  key <- F.getGoogleApiKey
+  pure
+    $ fillVisibleItems
+        { zoom: 13
+        , center: center
+        , items: sortedItems
+        , visibleItems: sortedItems
+        , bounds:
+            { northeast:
+                { latitude: center.latitude + latOffset, longitude: center.longitude + lngOffset }
+            , southwest:
+                { latitude: center.latitude - latOffset, longitude: center.longitude - lngOffset }
+            }
+        , selected: Nothing
+        , userLocation: center
+        , googleApiKey: key
         }
-    , selected: Nothing
-    }
   where
-  sortedItems = sortList items
+  sortedItems = sortList center items
 
   center = fromMaybe { latitude: 42.35, longitude: -83.04 } coords
 

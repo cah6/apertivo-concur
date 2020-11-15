@@ -44,3 +44,7 @@ exports.scrollIntoView = function (el) {
     el.scrollIntoView({ behavior: "smooth" });
   };
 };
+
+exports.getGoogleApiKey = function () {
+  return process.env.REACT_APP_GOOGLE_KEY;
+};
