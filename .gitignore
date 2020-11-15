@@ -5,6 +5,7 @@ bower_components/
 tmp/
 output/
 html/index.js
+.firebase/
 /.psc-package
 /.cache
 /dist
@@ -12,3 +13,4 @@ html/index.js
 .psc-ide-port
 firebase-config.js
 apertivo-import
+docs/

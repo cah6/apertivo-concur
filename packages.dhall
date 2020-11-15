@@ -32,6 +32,58 @@ let additions =
       , version =
           "v1.0.1"
       }
+  -- for option
+  , codec-argonaut =
+      { dependencies =
+          [ "argonaut-core",
+            "codec",
+            "generics-rep",
+            "variant",
+            "ordered-collections",
+            "type-equality"
+          ]
+      , repo =
+          "https://github.com/garyb/purescript-codec-argonaut.git"
+      , version =
+          "v7.1.0"
+      }
+  , codec =
+      { dependencies =
+          [ "transformers",
+            "profunctor"
+          ]
+      , repo =
+          "https://github.com/garyb/purescript-codec.git"
+      , version =
+          "v3.0.0"
+      }
+  , option =
+      { dependencies =
+          [ "prelude",
+            "argonaut-codecs",
+            "argonaut-core",
+            "codec",
+            "codec-argonaut",
+            "argonaut",
+            "either",
+            "foreign",
+            "foreign-object",
+            "lists",
+            "maybe",
+            "profunctor",
+            "prelude",
+            "record",
+            "simple-json",
+            "transformers",
+            "tuples",
+            "type-equality",
+            "unsafe-coerce"
+          ]
+      , repo =
+          "https://github.com/joneshf/purescript-option.git"
+      , version =
+          "v2.1.0"
+      }
   }
 
 in  upstream // overrides // additions

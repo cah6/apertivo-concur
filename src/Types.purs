@@ -1,44 +1,49 @@
 module Types where
 
 import Custom.Prelude
-
+import Data.Array (sortBy)
 import Data.Enum (class BoundedEnum)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Enum (class GenericBoundedEnum, genericCardinality, genericFromEnum, genericToEnum)
 import Data.Generic.Rep.Show (genericShow)
+import Data.Ord (abs)
 import Foreign.Extras (enumReadForeign)
+import Foreign.Geolocation as Geo
+import Math (pow)
 import Simple.JSON as JSON
 
+type HappyHour
+  = { city :: String
+    , restaurant :: String
+    , id :: String
+    , link :: String
+    , placeId :: String
+    , latLng :: LatLng
+    , schedule :: Array Schedule
+    }
 
+type Schedule
+  = { days :: Array Weekday
+    , scheduleDescription :: String
+    , time :: String
+    }
 
-type HappyHour =
-  { city :: String
-  , restaurant :: String
-  , id :: String
-  , link :: String
-  , placeId :: String
-  , latLng :: LatLng
-  , schedule :: Array Schedule
-  }
-
-
-type Schedule =
-  { days :: Array Weekday
-  , scheduleDescription :: String
-  , time :: String
-  }
-
-
-type LatLng =
-  { latitude :: Number
-  , longitude :: Number
-  }
-
+type LatLng
+  = { latitude :: Number
+    , longitude :: Number
+    }
 
 data Weekday
-  = Sunday | Monday | Tuesday | Wednesday | Thursday | Friday | Saturday
+  = Sunday
+  | Monday
+  | Tuesday
+  | Wednesday
+  | Thursday
+  | Friday
+  | Saturday
 
 derive instance eqWeekday :: Eq Weekday
+
 derive instance genWeekday :: Generic Weekday _
 
 instance readForeignWeekday :: JSON.ReadForeign Weekday where
@@ -64,16 +69,30 @@ readWeekday str = case str of
   _ -> Monday
 
 daysOrdered :: Array Weekday
-daysOrdered = [ Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+daysOrdered = [ Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday ]
 
 abbreviate :: Weekday -> String
 abbreviate Sunday = "S"
+
 abbreviate Monday = "M"
+
 abbreviate Tuesday = "T"
+
 abbreviate Wednesday = "W"
+
 abbreviate Thursday = "T"
+
 abbreviate Friday = "F"
+
 abbreviate Saturday = "S"
+
+-- | Generally left to right? idk man
+sortList :: Array HappyHour -> Array HappyHour
+sortList xs = sortBy go xs
+  where
+  mag hh = hh.latLng.latitude + pow hh.latLng.longitude 2.0
+
+  go x y = compare (mag y) (mag x)
 
 ------------------------------------------------------------------------------
 -- | Test data
@@ -82,9 +101,9 @@ staticHappyHours = case JSON.readJSON exampleHappyHours of
   Left e -> []
   Right xs -> xs
 
-
 exampleHappyHours :: String
-exampleHappyHours = """
+exampleHappyHours =
+  """
 [
   {
     "latLng": {

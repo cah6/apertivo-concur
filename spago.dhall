@@ -14,6 +14,8 @@ You can edit this file as you like.
     , "console"
     , "effect"
     , "generics-rep"
+    , "option"
+    , "rationals"
     , "react-mui"
     , "simple-json"
     , "uuid"

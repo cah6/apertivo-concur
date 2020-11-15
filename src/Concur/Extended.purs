@@ -1,4 +1,4 @@
-module Concur
+module Concur.Extended
   ( module CR
   , module CE
   ) where
