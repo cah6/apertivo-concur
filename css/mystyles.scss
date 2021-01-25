@@ -46,8 +46,8 @@ reel-l {
   max-width: none;
 }
 
-box-l,
-body {
+// should box-l be capped here too?
+reel-l {
   max-width: 100vw;
 }
 
@@ -331,4 +331,8 @@ ul {
 
 .day-inactive {
   text-decoration: line-through;
+}
+
+.footer {
+  max-width: 100vw;
 }

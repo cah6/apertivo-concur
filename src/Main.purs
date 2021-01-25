@@ -18,8 +18,8 @@ main = C.runWidgetInDom "root" root
 root :: forall a. C.Widget C.HTML a
 root = do
   coords <- liftAff Geo.getLocation <|> loadingView "Please allow location access."
-  -- xs <- liftAff Firebase.getCollectionTyped
-  xs <- pure staticHappyHours
+  xs <- liftAff Firebase.getCollectionTyped
+  -- xs <- pure staticHappyHours
   input <- liftEffect $ initMapInput xs coords
   _ <- mapView input
   C.text "We never get here"
@@ -38,7 +38,7 @@ mapView input = do
           ]
           $ pure
           $ L.box_
-              (fromRecord { padding: "0.5rem" })
+              (fromRecord { padding: "0.5rem", classes: [ "footer" ] })
               [ L.reel_
                   (fromRecord { itemWidth: "auto", noBar: true })
                   (mapWithIndex (mkReelItem input) input.visibleItems)
@@ -103,11 +103,10 @@ scheduleDisplay schedule =
     $ L.stack_
         (fromRecord { space: "1rem" })
         [ L.cluster_
-            (fromRecord { justify: "space-between" })
+            (fromRecord { justify: "space-between", space: "--s1" })
             [ C.ul'
                 [ C.li' [ weekDisplay schedule.days ]
                 , C.li' [ C.p' [ C.text schedule.time ] ]
-                -- , C.li' [ C.p' [ C.text schedule.scheduleDescription ] ]
                 ]
             ]
         , C.p' [ C.text schedule.scheduleDescription ]
@@ -120,7 +119,7 @@ timeDisplay time = do
 weekDisplay :: forall a. Array Weekday -> C.Widget C.HTML a
 weekDisplay daysActive = do
   L.cluster_
-    (fromRecord { space: "1rem" })
+    (fromRecord { space: ".5rem" })
     [ C.ul
         []
         (dayDisplay daysActive <$> daysOrdered)

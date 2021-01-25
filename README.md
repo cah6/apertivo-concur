@@ -18,6 +18,4 @@ Production build
 
 Download https://dl.google.com/closure-compiler/compiler-20200719.zip into closure-compiler/.
 
-> yarn prod
-
-Deploy using github pages, so just push the `docs` folder.
+> yarn prod; firebase deploy --only hosting

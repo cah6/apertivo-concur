@@ -81,6 +81,9 @@ mkGoogleMap input = do
         northeast = bounds.getNorthEast unit
 
         southwest = bounds.getSouthWest unit
+      let
+        newCenter = { lat: 30.263, lng: -97.74 }
+      -- _ <- map.state.map.panTo.apply newCenter
       pure
         $ fillVisibleItems
         $ input
